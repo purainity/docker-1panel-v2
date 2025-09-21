@@ -1,0 +1,22 @@
+[Unit]
+Description=Docker Application Container Engine
+Documentation=https://docs.docker.com
+After=network.target
+
+[Service]
+Type=simple
+# 当前服务只是为了让1panel可以识别docker启动，没有其他作用
+ExecStart=/bin/sh -c \
+  'while true; do \
+    if [ ! -S /var/run/docker.sock ]; then \
+      systemctl --no-block fail docker-sock-monitor.service; \
+      exit 1; \
+    fi; \
+    sleep 10; \
+  done'
+Restart=on-failure
+RestartSec=5s
+User=root
+
+[Install]
+WantedBy=multi-user.target

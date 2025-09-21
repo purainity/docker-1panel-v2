@@ -1,5 +1,5 @@
-# 使用 Debian 12 作为基础镜像
-FROM debian:12
+# 使用 Debian 13 作为基础镜像
+FROM debian:13
 
 # 默认环境变量
 # 时区：TZ
@@ -23,14 +23,11 @@ ENV TZ=Asia/Shanghai \
 WORKDIR /app
 
 # 复制必要的文件
-COPY entrypoint.sh install.sh ./
+COPY entrypoint.sh install.sh systemctl3.py journalctl3.py docker.service ./
 
 # 设置文件权限
 RUN chmod +x ./entrypoint.sh && \
     chmod +x ./install.sh
-
-# 创建 Docker 套接字的卷
-VOLUME /var/run/docker.sock
 
 # 启动
 ENTRYPOINT ["/app/entrypoint.sh"]
